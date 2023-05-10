@@ -1,69 +1,39 @@
 <template>
   <div>
     <div id="svg" class="pt-5"></div>
-    <div id="svg2"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-6" id="svg2"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
-// import {tip as tep} "d3-tip";
-import report from "./data/reports.json";
+// import report from "./data/reports.json";
+import report1 from "./data/report1.json";
 import { renderTimeEntriesAction } from "../interval";
 import { ListTag } from "../lib";
 export default {
   data() {
     return {
       taglist1: [],
-      entry: [],
-      taglist3: [],
-      listImag: [],
+      gta: 0,
+      gtm: 0,
+      gtxi: 0,
+      adob: 0,
+      acquisio: 0,
+      acxiom: 0,
+      addThi: 0,
+      adenti: 0,
+      gtOthers: 0,
       list1: [],
-      listTable: [],
       secondList: [],
-      thirdList: [],
-      report: report,
-      db: [
-        { name: "news", parent: "" },
-
-        { name: "tech", parent: "news" },
-        { name: "sport", parent: "news" },
-        { name: "music", parent: "news" },
-
-        { name: "ai", parent: "tech", amount: 5 },
-        { name: "coding", parent: "tech", amount: 5 },
-        { name: "tablets", parent: "tech", amount: 3 },
-        { name: "laptops", parent: "tech", amount: 6 },
-        { name: "d3", parent: "tech", amount: 3 },
-        { name: "gaming", parent: "tech", amount: 3 },
-
-        { name: "football", parent: "sport", amount: 6 },
-        { name: "hockey", parent: "sport", amount: 3 },
-        { name: "baseball", parent: "sport", amount: 5 },
-        { name: "tenis", parent: "sport", amount: 6 },
-        { name: "f1", parent: "sport", amount: 1 },
-
-        { name: "house", parent: "music", amount: 3 },
-        { name: "rock", parent: "music", amount: 4 },
-        { name: "punk", parent: "music", amount: 5 },
-        { name: "jazz", parent: "music", amount: 2 },
-        { name: "pop", parent: "music", amount: 3 },
-        { name: "classical", parent: "music", amount: 5 },
-      ],
+      report: report1,
     };
   },
   methods: {
-    buildLabelTag() {
-      // le temps des tags avec une dates inferieure à la date de debut des actions (tests) auront pour parent load page
-      // [this.report.report.entries.startedDateTime < this.report.report.check.stats.starts]
-      // if (new Date(entrie.startedDateTime).getTime() < new Date(this.report.report.check.stats.start).getTime()) {
-      //     console.log(entrie);
-      //   }
-      // if (el.time < 500) {
-      //   console.log("Valeurs < 500 : ", el);
-      //   return el.request.url.includes(element.path);
-      // };
-    },
     buildtree() {
       // load parent
       const model = {
@@ -71,8 +41,6 @@ export default {
         parent: "",
         amount: this.report.report.pages[0].startedDateTime,
         path: "",
-        entrie : []
-        
       };
       this.list1.push(model);
 
@@ -83,7 +51,6 @@ export default {
         label = ListTag.filter((tag, index) => {
           return entrie.request.url.includes(tag.path);
         });
-        // console.log("Valeur du label", label);
 
         if (label.length != 0) {
           const model = {
@@ -91,7 +58,6 @@ export default {
             parent: "Load Page",
             amount: this.report.report.entries[i].time,
             path: label[0].path,
-            entrie : []
           };
 
           //  List pour compter les tags retrouvés
@@ -106,228 +72,158 @@ export default {
 
       console.log(this.taglist1);
 
-      // load children 2
-      this.secondList.forEach((element) => {
-        let modelTag = [];
+      let googleTagMag = 0;
+      let googleTagAnal = 0;
+      let xitiTag = 0;
+      let adob = 0;
+      let others = 0;
+      let Acquisio = 0;
+      let Acxiom = 0;
+      let AddThi = 0;
+      let Adenti = 0;
+      for (let index = 0; index < this.taglist1.length; index++) {
+        switch (true) {
+          case this.taglist1[index].path.includes(
+            "https://www.googletagmanager.com"
+          ):
+            this.gtm = ++googleTagMag;
+            break;
+          case this.taglist1[index].path.includes(
+            "https://www.google-analytics.com"
+          ):
+            this.gta = ++googleTagAnal;
+            break;
+          case this.taglist1[index].path.includes("https://logs1412.xiti.com"):
+            this.gtxi = ++xitiTag;
+            break;
+          case this.taglist1[index].path.includes("adobe"):
+            this.adobe = ++adob;
+            break;
+          case this.taglist1[index].path.includes("http://adentifi"):
+            this.adenti = ++Adenti;
+            break;
+          case this.taglist1[index].path.includes("http://r.dlx.addthis"):
+            this.addThi = ++AddThi;
+            break;
+          case this.taglist1[index].path.includes("http://p.acxiom-online"):
+            this.acxiom = ++Acxiom;
+            break;
+          case this.taglist1[index].path.includes("http://www.acquisio"):
+            this.acquisio = ++Acquisio;
+            break;
+          default:
+            this.gtOthers = ++others;
+        }
+        // acquisio
+        // acxiom
+        // addThi
+        // adenti
+      }
 
-        modelTag = this.report.report.entries.filter((el) => {
-          return el.request.url.includes(element.path);
-        });
-        console.log("Data", modelTag);
+      // // load children 2
+      // this.secondList.forEach((element) => {
+      //   let modelTag = [];
 
-        // reconstruction du tag
-        const LIST_TAG = [];
+      //   modelTag = this.report.report.entries.filter((el) => {
+      //     return el.request.url.includes(element.path);
+      //   });
 
-        modelTag.forEach((item) => {
-          if (item.time < 300) {
-            // Step 1
-            const model = {
-              name: item.request.url.substring(8, 32),
-              parent: element.name,
-              amount: item.time,
-              path: element.path,
-              entrie : []
-            };
+      //   // reconstruction du tag
+      //   const LIST_TAG = [];
 
-            if (!JSON.stringify(LIST_TAG).includes(model.name)) {
-              LIST_TAG.push(model);
+      //   modelTag.forEach((item) => {
+      //     if (item.time < 300) {
+      //       // Step 1
+      //       const model = {
+      //         name: item.request.url.substring(8, 32),
+      //         parent: element.name,
+      //         amount: item.time,
+      //         path: element.path,
+      //         entrie : ListTag.filter((tag)=>{
+      //         return this.report.report.entries[0].request.url.includes(tag.path)
 
-              this.list1.push(model);
-              console.log(LIST_TAG);
-            }
-            // LIST_TAG.push(model);
+      //       })
+      //       };
 
-            // this.list1.push(model);
-          }
-        });
-        // console.log("tag list",LIST_TAG);
+      //       if (!JSON.stringify(LIST_TAG).includes(model.name)) {
+      //         LIST_TAG.push(model);
 
-        const NextTagList = [];
-        LIST_TAG.forEach((item) => {
-          modelTag.forEach((value) => {
-            if (value.time >= 300 && value.time < 600) {
-              if (value.request.url.includes(item.name)) {
-                const model = {
-                  name: value.request.url.substring(11, 28),
-                  parent: value.request.url.substring(8, 32),
-                  amount: value.time,
-                  path: item.path,
-                  entrie : []
-                };
-                if (!JSON.stringify(NextTagList).includes(model.name)) {
-                  NextTagList.push(model);
-                  this.list1.push(model);
-                }
-              }
-            }
-          });
-        });
+      //         this.list1.push(model);
+      //         console.log(LIST_TAG);
+      //       }
+      //     }
+      //   });
 
-        // Children 3 [600 - 900]
-        const listBase = [];
-        NextTagList.forEach((value) => {
-          modelTag.forEach((item) => {
-            if (item.time >= 600 && item.time < 900) {
-              if (item.request.url.includes(value.name)) {
-                // Step 1
-                const model = {
-                  name: item.request.url.substring(9, 33),
-                  parent: item.request.url.substring(11, 28),
-                  amount: item.time,
-                  path: item.path,
-                  entrie : []
-                };
+      //   const NextTagList = [];
+      //   LIST_TAG.forEach((item) => {
+      //     modelTag.forEach((value) => {
+      //       if (value.time >= 300 && value.time < 600) {
+      //         if (value.request.url.includes(item.name)) {
+      //           const model = {
+      //             name: value.request.url.substring(11, 28),
+      //             parent: value.request.url.substring(8, 32),
+      //             amount: value.time,
+      //             path: item.path,
+      //             entrie : ListTag.filter((tag)=>{
+      //         return this.report.report.entries[0].request.url.includes(tag.path)
 
-                listBase.push(model);
-                console.log("listBase", listBase);
+      //       })
+      //           };
+      //           if (!JSON.stringify(NextTagList).includes(model.name)) {
+      //             NextTagList.push(model);
+      //             this.list1.push(model);
+      //           }
+      //         }
+      //       }
+      //     });
+      //   });
 
-                this.list1.push(model);
-                console.log(this.list1);
-              }
-            }
-          });
-        });
-      });
+      //   // Children 3 [600 - 900]
+      //   const listBase = [];
+      //   NextTagList.forEach((value) => {
+      //     modelTag.forEach((item) => {
+      //       if (item.time >= 600 && item.time < 900) {
+      //         if (item.request.url.includes(value.name)) {
+      //           // Step 1
+      //           const model = {
+      //             name: item.request.url.substring(9, 33),
+      //             parent: item.request.url.substring(11, 28),
+      //             amount: item.time,
+      //             path: item.path,
+      //             entrie : ListTag.filter((tag)=>{
+      //         return this.report.report.entries[0].request.url.includes(tag.path)
 
-      console.log("data list", this.list1);
+      //       })
+      //           };
+
+      //           listBase.push(model);
+      //           console.log("listBase", listBase);
+
+      //           this.list1.push(model);
+      //           console.log(this.list1);
+      //         }
+      //       }
+      //     });
+      //   });
+      // });
+
       return this.list1;
     },
 
-    // chart() {
-    //   const svg = d3
-    //     .select("#svg")
-    //     .append("svg")
-    //     .attr("width", innerWidth)
-    //     .attr("height", innerHeight / 2);
-
-    //   const group = svg.append("g").attr("width", 800).attr("height", 400);
-    //   // var alphabet = group.append("g");
-    //   // for (var i = 0; i < 26; ++i) {
-    //   //   alphabet
-    //   //     .append("text")
-    //   //     .attr("x", 200 + i * 25)
-    //   //     .attr("y", 50)
-    //   //     .attr("font-family", "Courier")
-    //   //     .attr("font-size", "40px")
-    //   //     .text(String.fromCharCode(65 + Math.random() * 26));
-    //   // }
-    //   // alphabet
-    //   //   .selectAll("text")
-    //   //   .transition()
-    //   //   .ease(d3.easeLinear)
-    //   //   .duration(10000)
-    //   //   .tween("text", function () {
-    //   //     var currentValue = this.textContent.charCodeAt(0);
-    //   //     var i = d3.interpolateRound(currentValue, 90); // 90 = Z
-    //   //     return function (t) {
-    //   //       this.textContent = String.fromCharCode(i(t));
-    //   //     };
-    //   //   });
-
-    //   const random = d3.randomUniform(4, 150);
-    //   console.log(random());
-
-    //   // BarChar sample 1
-    //   var xBar = d3.scaleBand().range([0, 400]).padding(0.1);
-    //   var yBar = d3.scaleLinear().range([200, 0]);
-
-    //   const data = [
-    //     { name: "Sylnavy", value: 200 },
-    //     { name: "valmy", value: 60 },
-    //     { name: "TONY", value: 450 },
-    //     { name: "Davy", value: 300 },
-    //     { name: "J'aime", value: 180 },
-    //     { name: "Aniel", value: 56 },
-    //     { name: "Jean", value: 556 },
-    //     { name: "Mardoché", value: 256 },
-    //     { name: "Pierre", value: 100 },
-    //     { name: "Dvy", value: 300 },
-    //     { name: "J'ime", value: 180 },
-    //     { name: "Aiel", value: 56 },
-    //     { name: "Jan", value: 556 },
-    //     { name: "Madoché", value: 256 },
-    //     { name: "Pirre", value: 100 },
-    //   ];
-    //   //   // var data = getRandomData(4, 150);
-    //   //   xBar.domain(data.map((d) => d.name));
-    //   //   yBar.domain([0, 400]);
-
-    //   //   group
-    //   //     .selectAll(".bar")
-    //   //     .data(data)
-    //   //     .enter()
-    //   //     .append("rect")
-    //   //     .attr("class", "bar")
-    //   //     .attr("x", (d) => xBar(d.name))
-    //   //     .attr("width", xBar.bandwidth())
-    //   //     .attr("height", (d) => yBar(d.value))
-    //   //     .attr("y", (d) => 300 - yBar(d.value));
-
-    //   //   console.log("Valmy");
-    //   //   // var data = getRandomData(4, 150);
-    //   //   xBar.domain(data.map((d) => d.name));
-    //   //   group
-    //   //   .selectAll("rect")
-    //   // .data(data)
-    //   // .transition()
-    //   // .duration(1000)
-    //   // .attr("y", 200)
-    //   // .attr("height", 0)
-    //   // .transition()
-    //   // .duration(1000)
-    //   // .attr("y", d => yBar(d.value))
-    //   // .attr("height", d => 200 - yBar(d.value));
-    //   //     // .selectAll("rect")
-    //   //     // .data(data)
-    //   //     // .transition()
-    //   //     // .duration(1000)
-    //   //     // .attr("y", (d) => yBar(d.value))
-    //   //     // .attr("height", (d) => 200 - yBar(d.value));
-    //   //   console.log("Sylnavy");
-    //   // Line Chart sample 1
-
-    //   var xLine = d3.scaleBand().range([0, 800]).padding(0.5);
-    //   var yLine = d3.scaleLinear().range([200, 0]);
-    //   var line = d3
-    //     .line()
-    //     .x((d) => xLine(d.name))
-    //     .y((d) => yLine(d.value));
-    //   // var data = getRandomData(100, 150);
-    //   xLine.domain(data.map((d) => d.name));
-    //   yLine.domain(d3.extent(data, (d) => d.value));
-
-    //   var linePath = svg
-    //     .append("path")
-    //     .datum(data)
-    //     .attr("d", line)
-    //     .style("fill", "none")
-    //     .style("stroke", "#3498db")
-    //     .style("stroke-width", "1px")
-    //     .attr("transform", "translate(150, 0)");
-
-    //   var linePathLength = linePath.node().getTotalLength();
-    //   console.log(linePathLength);
-    //   linePath
-    //     .attr("stroke-dasharray", linePathLength)
-    //     .attr("stroke-dashoffset", linePathLength)
-    //     .transition()
-    //     .duration(4000)
-    //     .ease(d3.easeLinear)
-    //     .attr("stroke-dashoffset", 0);
-    // },
-
-    chart2() {
+    chart() {
+      const width = innerWidth;
+      const height = innerHeight;
       const svg = d3
         .select("#svg")
         .append("svg")
-        .attr("width", innerWidth)
-        .attr("height", innerHeight);
+        .attr("width", width * 0.8)
+        .attr("height", height * 0.5);
 
       const group = svg
         .append("g")
-        .attr("width", "100%")
-        .attr("height", 800)
-        .attr("transform", "translate(50, 50)");
+        .attr("width", width * 0.7)
+        .attr("height", height * 0.4)
+        .attr("transform", `translate(${width * 0.07}, ${height * 0.05})`);
 
       // data strat
       const strat = d3
@@ -336,7 +232,7 @@ export default {
         .parentId((d) => d.parent);
 
       // const tree = d3.tree().size([400, 300]);
-      const tree = d3.tree().size([200, 300]);
+      const tree = d3.tree().size([width * 0.6, height * 0.4]);
 
       const colour = d3.scaleOrdinal([
         "green",
@@ -405,106 +301,142 @@ export default {
           .style("cursor", "pointer")
           .style("stroke-width", 0.75);
 
-        //  descendants
-        this.list1.forEach((element) => {
-          // step 1
-          if (element.name == "Load Page") {
-            element.ico = "src/assets/globe.ico";
-          }
-          if (
-            element.name == "Google Tag Manager" ||
-            element.name == "www.googletagmanager.com" ||
-            element.name == ".googletagmanager"
-          ) {
-            element.ico = "src/assets/gtm.ico";
-          }
-          if (
-            element.name == "Google Analytics" ||
-            element.name == "www.google-analytics.com" ||
-            element.name == ".google-analytics"
-          ) {
-            element.ico = "src/assets/ga.ico";
-          }
-        });
-
         const gtmanager = "src/assets/gtm.ico";
         const gtanal = "src/assets/ga.ico";
         const loadpage = "src/assets/globe.ico";
+        const others = "src/assets/tag.ico";
+
+        //  descendants
+        this.list1.forEach((element) => {
+          // step 1
+          switch (true) {
+            case element.name == "Load Page":
+              element.ico = loadpage;
+              break;
+            case element.name == "Google Tag Manager":
+              element.ico = gtmanager;
+              break;
+            case element.name == "Google Analytics":
+              element.ico = gtanal;
+              break;
+
+            default:
+              element.ico = others;
+              break;
+          }
+        });
 
         enterNodes
           .append("image")
           .attr("xlink:href", (d, i, n) => {
-            if (
-              d.data.name.includes("googletagmanager") ||
-              d.data.name.includes("Google Tag Manager")
-            ) {
+            if (d.data.name.includes("Google Tag Manager")) {
               return gtmanager;
-            } else if (
-              d.data.name.includes("google-analytics") ||
-              d.data.name.includes("Google Analytics")
-            ) {
+            } else if (d.data.name.includes("Google Analytics")) {
               return gtanal;
-            } else {
+            } else if (d.data.name.includes("Load Page")) {
               return loadpage;
+            } else {
+              return others;
             }
           })
-          .attr("x", -8)
-          .attr("y", -8)
-          .attr("width", 17)
-          .attr("height", 17)
+          .attr("x", -9)
+          .attr("y", -9)
+          .attr("width", 20)
+          .attr("height", 20)
           .style("cursor", "pointer");
-
-        // group
-        //   .selectAll("image")
-        //   .on("mouseover", function (event, d) {
-        //     div.transition().duration(200).style("opacity", 0.9);
-        //     div
-        //       .html("Name : " + d.data.name)
-        //       .style("left", event.pageX + 10 + "px")
-        //       .style("top", event.pageY - 50 + "px");
-        //   })
-        //   .on("mouseout", function (event, d) {
-        //     div.transition().duration(500).style("opacity", 0);
-        //   });
 
         group
           .selectAll("image")
-          .on("mouseover", function (event, d) {
-            if (
-              d.data.name.includes("googletagmanager") ||
-              d.data.name.includes("Google Tag Manager")
-            ) {
-              console.log(d);
-              div.transition().duration(200).style("opacity", 0.9);
-              div
-              .html(`<h3>we have found   ${d.data.entrie.length} tag(s) of Google Tag Manager </h3>
-                  <br>
-                  <p>A Tag Manager container can override any manually coded tags on a site or app, including tags from Google Ads, Google Analytics, Floodlight, and third-party tags. Learn how to use Tag Manager with Analytics Academy!... </p>
-                  <br>
-                  according to: https://support.google.com/tagmanager/`)
-                .style("left", event.pageX + 10 + "px")
-                .style("top", event.pageY - 50 + "px");
-            } else if (
-              d.data.name.includes("google-analytics") ||
-              d.data.name.includes("Google Analytics")
-            ) {
-              div.transition().duration(200).style("opacity", 0.9);
-              div
-                .html(`<h3>we have found   ${d.data.entrie.length} tag(s) of Google Analytics </h3>
+          .on("mouseover", (event, d) => {
+            switch (true) {
+              case d.data.name.includes("Google Tag Manager"):
+                div.transition().duration(200).style("opacity", 0.9);
+                div
+                  .html(
+                    `<p><span><img src="src/assets/gtm.ico" width="17" alt="" srcset=""> : We have found   ${this.gtm} tag(s) of Google Analytics</span></p>
+          
+          <strong>Description :</strong> <br>
+          Tag Manager container can override any manually coded tags on a site or app, including tags from Google Ads, Google Analytics, Floodlight, and third-party tags. Learn how to use Tag Manager with Analytics Academy!... </p>
+            according to: https://support.google.com/tagmanager/`
+                  )
+                  .style("left", event.pageX - 120 + "px")
+                  .style("top", event.pageY - 200 + "px");
+                break;
 
-                <br>
-                <p>The Google tag lets you send data from your website to linked Google product destinations to help you measure the effectiveness of your website and ads. The Google tag is currently only accessible and configurable from Google Ads and Google Analytics... </p>
+              case d.data.name.includes("Google Analytics"):
+                div.transition().duration(200).style("opacity", 0.9);
+                div
+                  .html(
+                    `<p><span><img src="src/assets/ga.ico" width="17" alt="" srcset=""> : We have found   ${this.gta} tag(s) of Google Analytics</span></p>
+          
+          <strong>Description :</strong> <br>
+          <p>The Google tag lets you send data from your website to linked Google product destinations to help you measure the effectiveness of your website and ads. The Google tag is currently only accessible and configurable from Google Ads and Google Analytics... </p>
 
-                <br>
-                according to: https://support.google.com/analytics/`)
-                .style("left", event.pageX + 10 + "px")
-                .style("top", event.pageY - 50 + "px");
-            } else {
-              div.transition().duration(200).style("opacity", 0.9);
-              div
-                .html(`${report.report.pages[0].title}`)
-                .style("left", event.pageX + 10 + "px")
-                .style("top", event.pageY - 50 + "px");
+          according to: https://support.google.com/analytics/`
+                  )
+                  .style("left", event.pageX - 120 + "px")
+                  .style("top", event.pageY - 220 + "px");
+                break;
+
+              case d.data.name.includes("Acquisio"):
+                div.transition().duration(200).style("opacity", 0.9);
+                div
+                  .html(
+                    `<h3>we have found   ${this.acquisio} tag(s) of Acquisio </h3>
+
+          <p>From search engine and social media marketing to programmatic buying, our team of experts helps you electrify and simplify managing... </p>
+
+          according to: https://www.acquisio.com/fr/`
+                  )
+                  .style("left", event.pageX - 80 + "px")
+                  .style("top", event.pageY - 170 + "px");
+                break;
+
+              case d.data.name.includes("Acxiom"):
+                div.transition().duration(200).style("opacity", 0.9);
+                div
+                  .html(
+                    `<h3>we have found   ${this.acxiom} tag(s) of Acxiom </h3>
+
+          <p>Acxiom's data and technology transform marketing – giving our clients the power to manage audiences, personalize customer experiences and create profitable .... </p>
+
+          according to: https://www.acxiom.com/`
+                  )
+                  .style("left", event.pageX - 80 + "px")
+                  .style("top", event.pageY - 170 + "px");
+                break;
+
+              case d.data.name.includes("AddThis"):
+                div.transition().duration(200).style("opacity", 0.9);
+                div
+                  .html(
+                    `<h3>we have found   ${this.addThi} tag(s) of AddThis </h3>
+
+          <p>Ready-made solution: AddThis tracking recipe for your Google Tag Manager container. Download it, import and configure in minutes... </p>
+
+          according to: https://www.analyticsmania.com/google-tag-manager-recipes/addthis/`
+                  )
+                  .style("left", event.pageX - 80 + "px")
+                  .style("top", event.pageY - 170 + "px");
+                break;
+
+              case d.data.name.includes("Adentifi"):
+                div.transition().duration(200).style("opacity", 0.9);
+                div
+                  .html(
+                    `<h3>we have found   ${this.adenti} tag(s) of Adentifi </h3>`
+                  )
+                  .style("left", event.pageX - 80 + "px")
+                  .style("top", event.pageY - 170 + "px");
+                break;
+
+              default:
+                div.transition().duration(200).style("opacity", 0.9);
+                div
+                  .html(`${this.report.report.pages[0].title}`)
+                  .style("left", event.pageX + "px")
+                  .style("top", event.pageY + "px");
+                break;
             }
           })
           .on("mouseout", function (event, d) {
@@ -516,8 +448,7 @@ export default {
     },
   },
   mounted() {
-    // this.chart();
-    this.chart2();
+    this.chart();
   },
 };
 </script>
@@ -527,6 +458,7 @@ export default {
   position: absolute;
   opacity: 0.8;
   z-index: 1000;
+  text-align: center;
   text-align: left;
   border-radius: 4px;
   border: 1px solid #070707;
@@ -536,19 +468,24 @@ export default {
   color: #ffffff;
   font-weight: bold;
   background-color: rgb(13, 7, 104);
-  font: 12px sans-serif;
+  font: 10px sans-serif;
   font-style: italic;
-  max-width: 300px;
+  max-width: 250px;
 }
 
-.chart-tooltip h3{
-  font-size: 14px;
+.chart-tooltip span,
+.chart-tooltip h3 {
+  font-size: 11px;
   text-align: center;
 }
-.chart-tooltip p{
-  font-size: 12px;
+.chart-tooltip p {
+  font-size: 10px;
   text-align: justify;
+  margin: 10px 0px;
 }
-
-
+.chart-tooltip p {
+  font-size: 10px;
+  text-align: justify;
+  margin: 10px 0px;
+}
 </style>
