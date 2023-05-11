@@ -306,25 +306,36 @@ export default {
         const loadpage = "src/assets/globe.ico";
         const others = "src/assets/tag.ico";
 
+
         //  descendants
         this.list1.forEach((element) => {
-          // step 1
-          switch (true) {
-            case element.name == "Load Page":
-              element.ico = loadpage;
-              break;
-            case element.name == "Google Tag Manager":
-              element.ico = gtmanager;
-              break;
-            case element.name == "Google Analytics":
-              element.ico = gtanal;
-              break;
-
-            default:
-              element.ico = others;
-              break;
-          }
+          ListTag.forEach((list)=>{
+            if(list.libelle.includes(element.name)){
+            element.ico = list.icon
+            }
+          })
         });
+        console.log(this.list1);
+
+        //  descendants
+        // this.list1.forEach((element) => {
+        //   // step 1
+        //   switch (true) {
+        //     case element.name == "Load Page":
+        //       element.ico = loadpage;
+        //       break;
+        //     case element.name == "Google Tag Manager":
+        //       element.ico = gtmanager;
+        //       break;
+        //     case element.name == "Google Analytics":
+        //       element.ico = gtanal;
+        //       break;
+
+        //     default:
+        //       element.ico = others;
+        //       break;
+        //   }
+        // });
 
         enterNodes
           .append("image")
@@ -353,7 +364,7 @@ export default {
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(
-                    `<p><span><img src="src/assets/gtm.ico" width="17" alt="" srcset=""> : We have found   ${this.gtm} tag(s) of Google Analytics</span></p>
+                    `<p><span><img src="src/assets/gtm.ico" width="17" alt="" srcset=""> : We found   ${this.gtm} tag(s) of Google Analytics</span></p>
           
           <strong>Description :</strong> <br>
           Tag Manager container can override any manually coded tags on a site or app, including tags from Google Ads, Google Analytics, Floodlight, and third-party tags. Learn how to use Tag Manager with Analytics Academy!... </p>
@@ -367,7 +378,7 @@ export default {
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(
-                    `<p><span><img src="src/assets/ga.ico" width="17" alt="" srcset=""> : We have found   ${this.gta} tag(s) of Google Analytics</span></p>
+                    `<p><span><img src="src/assets/ga.ico" width="17" alt="" srcset=""> : We found   ${this.gta} tag(s) of Google Analytics</span></p>
           
           <strong>Description :</strong> <br>
           <p>The Google tag lets you send data from your website to linked Google product destinations to help you measure the effectiveness of your website and ads. The Google tag is currently only accessible and configurable from Google Ads and Google Analytics... </p>
@@ -382,7 +393,7 @@ export default {
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(
-                    `<h3>we have found   ${this.acquisio} tag(s) of Acquisio </h3>
+                    `<h3>we found   ${this.acquisio} tag(s) of Acquisio </h3>
 
           <p>From search engine and social media marketing to programmatic buying, our team of experts helps you electrify and simplify managing... </p>
 
@@ -396,7 +407,7 @@ export default {
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(
-                    `<h3>we have found   ${this.acxiom} tag(s) of Acxiom </h3>
+                    `<h3>we found   ${this.acxiom} tag(s) of Acxiom </h3>
 
           <p>Acxiom's data and technology transform marketing – giving our clients the power to manage audiences, personalize customer experiences and create profitable .... </p>
 
@@ -410,7 +421,7 @@ export default {
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(
-                    `<h3>we have found   ${this.addThi} tag(s) of AddThis </h3>
+                    `<h3>we found   ${this.addThi} tag(s) of AddThis </h3>
 
           <p>Ready-made solution: AddThis tracking recipe for your Google Tag Manager container. Download it, import and configure in minutes... </p>
 
@@ -424,7 +435,7 @@ export default {
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(
-                    `<h3>we have found   ${this.adenti} tag(s) of Adentifi </h3>`
+                    `<h3>we found   ${this.adenti} tag(s) of Adentifi </h3>`
                   )
                   .style("left", event.pageX - 80 + "px")
                   .style("top", event.pageY - 170 + "px");
@@ -434,8 +445,8 @@ export default {
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(`${this.report.report.pages[0].title}`)
-                  .style("left", event.pageX + "px")
-                  .style("top", event.pageY + "px");
+                  .style("left", event.pageX + 30 + "px")
+                  .style("top", event.pageY - 20 + "px");
                 break;
             }
           })

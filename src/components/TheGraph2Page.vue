@@ -34,10 +34,10 @@ export default {
 
       // Dimensions du graphique
       const width = innerWidth;
-      const height = 400;
+      const height = innerHeight;
 
       // Fonction pour créer l'arbre
-      const treeLayout = d3.tree().size([height, width]);
+      const treeLayout = d3.tree().size([height*0.5, width*0.5]);
 
       // Fonction pour dessiner les liens
       const linkLayout = d3
