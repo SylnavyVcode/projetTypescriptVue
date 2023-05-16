@@ -1149,6 +1149,209 @@ export default {
       update(data);
 
       return svg.node();
+
+          // load children 1
+      // this.report.report.entries.forEach((entrie, i) => {
+      //   let label = null;
+
+      //   label = ListTag.filter((tag, index) => {
+      //     return entrie.request.url.includes(tag.path);
+      //   });
+
+      //   if (label.length != 0) {
+      //     const model = {
+      //       name: label[0].libelle,
+      //       parent: "Load Page",
+      //       amount: this.report.report.entries[i].time,
+      //       path: label[0].path,
+      //     };
+
+      //     //  List pour compter les tags retrouvés
+      //     this.taglist1.push(model);
+
+      //     if (!JSON.stringify(this.list1).includes(model.name)) {
+      //       this.secondList.push(model);
+      //       this.list1.push(model);
+      //     }
+      //   }
+      // });
+
+      // console.log(this.taglist1);
+
+      // let googleTagMag = 0;
+      // let googleTagAnal = 0;
+      // let xitiTag = 0;
+      // let adob = 0;
+      // let others = 0;
+      // let Acquisio = 0;
+      // let Acxiom = 0;
+      // let AddThi = 0;
+      // let Adenti = 0;
+      // for (let index = 0; index < this.taglist1.length; index++) {
+      //   switch (true) {
+      //     case this.taglist1[index].path.includes(
+      //       "https://www.googletagmanager.com"
+      //     ):
+      //       this.gtm = ++googleTagMag;
+      //       break;
+      //     case this.taglist1[index].path.includes(
+      //       "https://www.google-analytics.com"
+      //     ):
+      //       this.gta = ++googleTagAnal;
+      //       break;
+      //     case this.taglist1[index].path.includes("https://logs1412.xiti.com"):
+      //       this.gtxi = ++xitiTag;
+      //       break;
+      //     case this.taglist1[index].path.includes("adobe"):
+      //       this.adobe = ++adob;
+      //       break;
+      //     case this.taglist1[index].path.includes("http://adentifi"):
+      //       this.adenti = ++Adenti;
+      //       break;
+      //     case this.taglist1[index].path.includes("http://r.dlx.addthis"):
+      //       this.addThi = ++AddThi;
+      //       break;
+      //     case this.taglist1[index].path.includes("http://p.acxiom-online"):
+      //       this.acxiom = ++Acxiom;
+      //       break;
+      //     case this.taglist1[index].path.includes("http://www.acquisio"):
+      //       this.acquisio = ++Acquisio;
+      //       break;
+      //     default:
+      //       this.gtOthers = ++others;
+      //   }
+      // }
+      // console.log("listAZ", this.list1);
+
+      // let nombreTag = 0;
+      // this.taglist1.forEach((taglist) => {
+      //   this.list1.filter((tagElement) => {
+      //     taglist.path.includes(tagElement.path);
+      //     tagElement.nombre = this.list1.length;
+      //     console.log(tagElement);
+      //   });
+      // });
+      // console.log(this.list1);
+      // switch (true) {
+      //   case this.taglist1[index].path.includes(
+      //     "https://www.googletagmanager.com"
+      //   ):
+      //     this.gtm = ++googleTagMag;
+      //     break;
+      //   case this.taglist1[index].path.includes(
+      //     "https://www.google-analytics.com"
+      //   ):
+      //     this.gta = ++googleTagAnal;
+      //     break;
+      //   case this.taglist1[index].path.includes("https://logs1412.xiti.com"):
+      //     this.gtxi = ++xitiTag;
+      //     break;
+      //   case this.taglist1[index].path.includes("adobe"):
+      //     this.adobe = ++adob;
+      //     break;
+      //   case this.taglist1[index].path.includes("http://adentifi"):
+      //     this.adenti = ++Adenti;
+      //     break;
+      //   case this.taglist1[index].path.includes("http://r.dlx.addthis"):
+      //     this.addThi = ++AddThi;
+      //     break;
+      //   case this.taglist1[index].path.includes("http://p.acxiom-online"):
+      //     this.acxiom = ++Acxiom;
+      //     break;
+      //   case this.taglist1[index].path.includes("http://www.acquisio"):
+      //     this.acquisio = ++Acquisio;
+      //     break;
+      //   default:
+      //     this.gtOthers = ++others;
+      // }
+
+      // // load children 2
+      // this.secondList.forEach((element) => {
+      //   let modelTag = [];
+
+      //   modelTag = this.report.report.entries.filter((el) => {
+      //     return el.request.url.includes(element.path);
+      //   });
+
+      //   // reconstruction du tag
+      //   const LIST_TAG = [];
+
+      //   modelTag.forEach((item) => {
+      //     if (item.time < 300) {
+      //       // Step 1
+      //       const model = {
+      //         name: item.request.url.substring(8, 32),
+      //         parent: element.name,
+      //         amount: item.time,
+      //         path: element.path,
+      //         entrie : ListTag.filter((tag)=>{
+      //         return this.report.report.entries[0].request.url.includes(tag.path)
+
+      //       })
+      //       };
+
+      //       if (!JSON.stringify(LIST_TAG).includes(model.name)) {
+      //         LIST_TAG.push(model);
+
+      //         this.list1.push(model);
+      //         console.log(LIST_TAG);
+      //       }
+      //     }
+      //   });
+
+      //   const NextTagList = [];
+      //   LIST_TAG.forEach((item) => {
+      //     modelTag.forEach((value) => {
+      //       if (value.time >= 300 && value.time < 600) {
+      //         if (value.request.url.includes(item.name)) {
+      //           const model = {
+      //             name: value.request.url.substring(11, 28),
+      //             parent: value.request.url.substring(8, 32),
+      //             amount: value.time,
+      //             path: item.path,
+      //             entrie : ListTag.filter((tag)=>{
+      //         return this.report.report.entries[0].request.url.includes(tag.path)
+
+      //       })
+      //           };
+      //           if (!JSON.stringify(NextTagList).includes(model.name)) {
+      //             NextTagList.push(model);
+      //             this.list1.push(model);
+      //           }
+      //         }
+      //       }
+      //     });
+      //   });
+
+      //   // Children 3 [600 - 900]
+      //   const listBase = [];
+      //   NextTagList.forEach((value) => {
+      //     modelTag.forEach((item) => {
+      //       if (item.time >= 600 && item.time < 900) {
+      //         if (item.request.url.includes(value.name)) {
+      //           // Step 1
+      //           const model = {
+      //             name: item.request.url.substring(9, 33),
+      //             parent: item.request.url.substring(11, 28),
+      //             amount: item.time,
+      //             path: item.path,
+      //             entrie : ListTag.filter((tag)=>{
+      //         return this.report.report.entries[0].request.url.includes(tag.path)
+
+      //       })
+      //           };
+
+      //           listBase.push(model);
+      //           console.log("listBase", listBase);
+
+      //           this.list1.push(model);
+      //           console.log(this.list1);
+      //         }
+      //       }
+      //     });
+      //   });
+      // });
+
     },
   },
   mounted() {

@@ -19,15 +19,7 @@ export default {
   data() {
     return {
       taglist1: [],
-      gta: 0,
-      gtm: 0,
-      gtxi: 0,
-      adob: 0,
-      acquisio: 0,
-      acxiom: 0,
-      addThi: 0,
-      adenti: 0,
-      gtOthers: 0,
+      tagOrder: 0,
       list1: [],
       secondList: [],
       report: report1,
@@ -40,173 +32,35 @@ export default {
         name: "Load Page",
         parent: "",
         amount: this.report.report.pages[0].startedDateTime,
+        entries: [],
         path: "",
       };
       this.list1.push(model);
 
-      // load children 1
-      this.report.report.entries.forEach((entrie, i) => {
-        let label = null;
+      // First Children
+      ListTag.forEach((tag) => {
+        const model = {
+          name: tag.libelle,
+          parent: "Load Page",
+          amount: this.report.report.entries[0].time,
+          path: tag.path,
+          entries: this.report.report.entries.filter((entrie) => {
+            return entrie.request.url.includes(tag.path);
+          }),
+        };
 
-        label = ListTag.filter((tag, index) => {
-          return entrie.request.url.includes(tag.path);
-        });
+        this.taglist1.push(model);
+       
 
-        if (label.length != 0) {
-          const model = {
-            name: label[0].libelle,
-            parent: "Load Page",
-            amount: this.report.report.entries[i].time,
-            path: label[0].path,
-          };
-
-          //  List pour compter les tags retrouvés
-          this.taglist1.push(model);
-
+        if (model.entries.length > 0) {
           if (!JSON.stringify(this.list1).includes(model.name)) {
             this.secondList.push(model);
             this.list1.push(model);
           }
         }
       });
-
-      console.log(this.taglist1);
-
-      let googleTagMag = 0;
-      let googleTagAnal = 0;
-      let xitiTag = 0;
-      let adob = 0;
-      let others = 0;
-      let Acquisio = 0;
-      let Acxiom = 0;
-      let AddThi = 0;
-      let Adenti = 0;
-      for (let index = 0; index < this.taglist1.length; index++) {
-        switch (true) {
-          case this.taglist1[index].path.includes(
-            "https://www.googletagmanager.com"
-          ):
-            this.gtm = ++googleTagMag;
-            break;
-          case this.taglist1[index].path.includes(
-            "https://www.google-analytics.com"
-          ):
-            this.gta = ++googleTagAnal;
-            break;
-          case this.taglist1[index].path.includes("https://logs1412.xiti.com"):
-            this.gtxi = ++xitiTag;
-            break;
-          case this.taglist1[index].path.includes("adobe"):
-            this.adobe = ++adob;
-            break;
-          case this.taglist1[index].path.includes("http://adentifi"):
-            this.adenti = ++Adenti;
-            break;
-          case this.taglist1[index].path.includes("http://r.dlx.addthis"):
-            this.addThi = ++AddThi;
-            break;
-          case this.taglist1[index].path.includes("http://p.acxiom-online"):
-            this.acxiom = ++Acxiom;
-            break;
-          case this.taglist1[index].path.includes("http://www.acquisio"):
-            this.acquisio = ++Acquisio;
-            break;
-          default:
-            this.gtOthers = ++others;
-        }
-        // acquisio
-        // acxiom
-        // addThi
-        // adenti
-      }
-
-      // // load children 2
-      // this.secondList.forEach((element) => {
-      //   let modelTag = [];
-
-      //   modelTag = this.report.report.entries.filter((el) => {
-      //     return el.request.url.includes(element.path);
-      //   });
-
-      //   // reconstruction du tag
-      //   const LIST_TAG = [];
-
-      //   modelTag.forEach((item) => {
-      //     if (item.time < 300) {
-      //       // Step 1
-      //       const model = {
-      //         name: item.request.url.substring(8, 32),
-      //         parent: element.name,
-      //         amount: item.time,
-      //         path: element.path,
-      //         entrie : ListTag.filter((tag)=>{
-      //         return this.report.report.entries[0].request.url.includes(tag.path)
-
-      //       })
-      //       };
-
-      //       if (!JSON.stringify(LIST_TAG).includes(model.name)) {
-      //         LIST_TAG.push(model);
-
-      //         this.list1.push(model);
-      //         console.log(LIST_TAG);
-      //       }
-      //     }
-      //   });
-
-      //   const NextTagList = [];
-      //   LIST_TAG.forEach((item) => {
-      //     modelTag.forEach((value) => {
-      //       if (value.time >= 300 && value.time < 600) {
-      //         if (value.request.url.includes(item.name)) {
-      //           const model = {
-      //             name: value.request.url.substring(11, 28),
-      //             parent: value.request.url.substring(8, 32),
-      //             amount: value.time,
-      //             path: item.path,
-      //             entrie : ListTag.filter((tag)=>{
-      //         return this.report.report.entries[0].request.url.includes(tag.path)
-
-      //       })
-      //           };
-      //           if (!JSON.stringify(NextTagList).includes(model.name)) {
-      //             NextTagList.push(model);
-      //             this.list1.push(model);
-      //           }
-      //         }
-      //       }
-      //     });
-      //   });
-
-      //   // Children 3 [600 - 900]
-      //   const listBase = [];
-      //   NextTagList.forEach((value) => {
-      //     modelTag.forEach((item) => {
-      //       if (item.time >= 600 && item.time < 900) {
-      //         if (item.request.url.includes(value.name)) {
-      //           // Step 1
-      //           const model = {
-      //             name: item.request.url.substring(9, 33),
-      //             parent: item.request.url.substring(11, 28),
-      //             amount: item.time,
-      //             path: item.path,
-      //             entrie : ListTag.filter((tag)=>{
-      //         return this.report.report.entries[0].request.url.includes(tag.path)
-
-      //       })
-      //           };
-
-      //           listBase.push(model);
-      //           console.log("listBase", listBase);
-
-      //           this.list1.push(model);
-      //           console.log(this.list1);
-      //         }
-      //       }
-      //     });
-      //   });
-      // });
-
+      console.log(this.list1)
+      console.log("ListTag 1", this.taglist1)
       return this.list1;
     },
 
@@ -301,53 +155,41 @@ export default {
           .style("cursor", "pointer")
           .style("stroke-width", 0.75);
 
-        const gtmanager = "src/assets/gtm.ico";
-        const gtanal = "src/assets/ga.ico";
-        const loadpage = "src/assets/globe.ico";
-        const others = "src/assets/tag.ico";
-
+        const loadpage = "src/assets/imagesTree/globe.ico";
+        const others = "src/assets/imagesTree/tag.ico";
 
         //  descendants
         this.list1.forEach((element) => {
-          ListTag.forEach((list)=>{
-            if(list.libelle.includes(element.name)){
-            element.ico = list.icon
+          ListTag.forEach((list) => {
+            if (list.libelle.includes(element.name)) {
+              element.ico = list.icon;
+              element.html = list.html;
             }
-          })
+          });
         });
         console.log(this.list1);
-
-        //  descendants
-        // this.list1.forEach((element) => {
-        //   // step 1
-        //   switch (true) {
-        //     case element.name == "Load Page":
-        //       element.ico = loadpage;
-        //       break;
-        //     case element.name == "Google Tag Manager":
-        //       element.ico = gtmanager;
-        //       break;
-        //     case element.name == "Google Analytics":
-        //       element.ico = gtanal;
-        //       break;
-
-        //     default:
-        //       element.ico = others;
-        //       break;
-        //   }
-        // });
+        console.log(this.report.report.entries);
 
         enterNodes
           .append("image")
           .attr("xlink:href", (d, i, n) => {
-            if (d.data.name.includes("Google Tag Manager")) {
-              return gtmanager;
-            } else if (d.data.name.includes("Google Analytics")) {
-              return gtanal;
-            } else if (d.data.name.includes("Load Page")) {
+            for (let index = 0; index < this.list1.length; index++) {
+              if (this.list1[index].name.includes(d.data.name)) {
+                return d.data.ico;
+              }
+            }
+          })
+          .attr("x", -10)
+          .attr("y", -10)
+          .attr("width", 20)
+          .attr("height", 20)
+          .style("cursor", "pointer");
+
+        enterNodes
+          .append("image")
+          .attr("xlink:href", (d, i, n) => {
+            if (d.data.name.includes("Load Page")) {
               return loadpage;
-            } else {
-              return others;
             }
           })
           .attr("x", -9)
@@ -359,95 +201,25 @@ export default {
         group
           .selectAll("image")
           .on("mouseover", (event, d) => {
-            switch (true) {
-              case d.data.name.includes("Google Tag Manager"):
+            for (let index = 0; index < this.list1.length; index++) {
+              if (this.list1[index].name.includes(d.data.name)) {
+                console.log(d.data)
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(
-                    `<p><span><img src="src/assets/gtm.ico" width="17" alt="" srcset=""> : We found   ${this.gtm} tag(s) of Google Analytics</span></p>
-          
-          <strong>Description :</strong> <br>
-          Tag Manager container can override any manually coded tags on a site or app, including tags from Google Ads, Google Analytics, Floodlight, and third-party tags. Learn how to use Tag Manager with Analytics Academy!... </p>
-            according to: https://support.google.com/tagmanager/`
+                    `<p><span><img src=${d.data.ico} width="17" alt="" srcset=""> : We found   ${d.data.entries.length} tag(s) of ${d.data.name}</span></p> ${this.list1[index].html}`
                   )
                   .style("left", event.pageX - 120 + "px")
                   .style("top", event.pageY - 200 + "px");
-                break;
-
-              case d.data.name.includes("Google Analytics"):
-                div.transition().duration(200).style("opacity", 0.9);
-                div
-                  .html(
-                    `<p><span><img src="src/assets/ga.ico" width="17" alt="" srcset=""> : We found   ${this.gta} tag(s) of Google Analytics</span></p>
-          
-          <strong>Description :</strong> <br>
-          <p>The Google tag lets you send data from your website to linked Google product destinations to help you measure the effectiveness of your website and ads. The Google tag is currently only accessible and configurable from Google Ads and Google Analytics... </p>
-
-          according to: https://support.google.com/analytics/`
-                  )
-                  .style("left", event.pageX - 120 + "px")
-                  .style("top", event.pageY - 220 + "px");
-                break;
-
-              case d.data.name.includes("Acquisio"):
-                div.transition().duration(200).style("opacity", 0.9);
-                div
-                  .html(
-                    `<h3>we found   ${this.acquisio} tag(s) of Acquisio </h3>
-
-          <p>From search engine and social media marketing to programmatic buying, our team of experts helps you electrify and simplify managing... </p>
-
-          according to: https://www.acquisio.com/fr/`
-                  )
-                  .style("left", event.pageX - 80 + "px")
-                  .style("top", event.pageY - 170 + "px");
-                break;
-
-              case d.data.name.includes("Acxiom"):
-                div.transition().duration(200).style("opacity", 0.9);
-                div
-                  .html(
-                    `<h3>we found   ${this.acxiom} tag(s) of Acxiom </h3>
-
-          <p>Acxiom's data and technology transform marketing – giving our clients the power to manage audiences, personalize customer experiences and create profitable .... </p>
-
-          according to: https://www.acxiom.com/`
-                  )
-                  .style("left", event.pageX - 80 + "px")
-                  .style("top", event.pageY - 170 + "px");
-                break;
-
-              case d.data.name.includes("AddThis"):
-                div.transition().duration(200).style("opacity", 0.9);
-                div
-                  .html(
-                    `<h3>we found   ${this.addThi} tag(s) of AddThis </h3>
-
-          <p>Ready-made solution: AddThis tracking recipe for your Google Tag Manager container. Download it, import and configure in minutes... </p>
-
-          according to: https://www.analyticsmania.com/google-tag-manager-recipes/addthis/`
-                  )
-                  .style("left", event.pageX - 80 + "px")
-                  .style("top", event.pageY - 170 + "px");
-                break;
-
-              case d.data.name.includes("Adentifi"):
-                div.transition().duration(200).style("opacity", 0.9);
-                div
-                  .html(
-                    `<h3>we found   ${this.adenti} tag(s) of Adentifi </h3>`
-                  )
-                  .style("left", event.pageX - 80 + "px")
-                  .style("top", event.pageY - 170 + "px");
-                break;
-
-              default:
+              } 
+              else if (d.data.name.includes("Load Page")) {
+                // console.log(this.report.report.pages[0].title);
                 div.transition().duration(200).style("opacity", 0.9);
                 div
                   .html(`${this.report.report.pages[0].title}`)
-                  .style("left", event.pageX + 30 + "px")
-                  .style("top", event.pageY - 20 + "px");
-                break;
+                  .style("left", event.pageX + 40 + "px")
+                  .style("top", event.pageY - 10 + "px");
+              }
             }
           })
           .on("mouseout", function (event, d) {

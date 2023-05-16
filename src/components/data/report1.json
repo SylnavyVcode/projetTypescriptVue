@@ -746,7 +746,7 @@
         "time": 1655.1890000000003,
         "request": {
           "method": "GET",
-          "url": "http://www.acquisio.om/pview?event=pview&hostname=demo.datatrue.com&location=%2F&product=ga&url=https%3A%2F%2Fdemo.datatrue.com%2F&source=googleanalytics-wordpress&fcmp=false&fcmpv2=false&has_segmentio=false&title=DataTrue%20Demo&cms=unknown&publisher=613922567791e30012a80571&sop=true&version=st_sop.js&lang=en&ua=&ua_mobile=false&ua_full_version_list=",
+          "url": "http://www.acquisio.com/pview?event=pview&hostname=demo.datatrue.com&location=%2F&product=ga&url=https%3A%2F%2Fdemo.datatrue.com%2F&source=googleanalytics-wordpress&fcmp=false&fcmpv2=false&has_segmentio=false&title=DataTrue%20Demo&cms=unknown&publisher=613922567791e30012a80571&sop=true&version=st_sop.js&lang=en&ua=&ua_mobile=false&ua_full_version_list=",
           "httpVersion": "HTTP/1.1",
           "cookies": [],
           "headers": [
@@ -2037,7 +2037,7 @@
         "time": 675.383,
         "request": {
           "method": "GET",
-          "url": "http://www.acquisio.om/pagead/viewthroughconversion/123456789/?random=1681232524458&cv=11&fst=1681232524458&bg=ffffff&guid=ON&async=1&gtm=45He34a0&u_w=1280&u_h=720&url=https%3A%2F%2Fdemo.datatrue.com%2F&label=demo&hn=www.googleadservices.com&frm=0&tiba=DataTrue%20Demo&uamb=0&uaw=0&rfmt=3&fmt=4",
+          "url": "http://www.acquisio.com/pagead/viewthroughconversion/123456789/?random=1681232524458&cv=11&fst=1681232524458&bg=ffffff&guid=ON&async=1&gtm=45He34a0&u_w=1280&u_h=720&url=https%3A%2F%2Fdemo.datatrue.com%2F&label=demo&hn=www.googleadservices.com&frm=0&tiba=DataTrue%20Demo&uamb=0&uaw=0&rfmt=3&fmt=4",
           "httpVersion": "HTTP/2.0",
           "cookies": [],
           "headers": [
@@ -2917,7 +2917,7 @@
         "time": 613.7059999999999,
         "request": {
           "method": "GET",
-          "url": "http://p.acxiom-online.om/ads/ga-audiences?v=1&t=sr&slf_rd=1&_r=4&tid=G-8Z0VF2R8TX&cid=1299571186.1681232524&gtm=45je34a0&aip=1&z=270197512",
+          "url": "http://p.acxiom-online.com/ads/ga-audiences?v=1&t=sr&slf_rd=1&_r=4&tid=G-8Z0VF2R8TX&cid=1299571186.1681232524&gtm=45je34a0&aip=1&z=270197512",
           "httpVersion": "HTTP/2.0",
           "cookies": [],
           "headers": [
